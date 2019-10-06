@@ -161,7 +161,8 @@ stages:
             inputs:
               command: custom
               custom: benchmark
-              arguments: ../windows-build/test/Benchmarks/bin/Release/netcoreapp3.0/Benchmarks.dll --filter "*" --runtimes net461 net472 netcoreapp3.0
+              arguments: Benchmarks.dll --filter "*" --runtimes net461 net472 netcoreapp3.0
+              workingDirectory: $(System.DefaultWorkingDirectory)\..\windows-build\test\Benchmarks\bin\Release\netcoreapp3.0
 
   - stage: Release
     displayName: 🚀

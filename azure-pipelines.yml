@@ -156,19 +156,14 @@ stages:
               command: custom
               custom: tool
               arguments: install --global BenchmarkDotNet.Tool
-          - task: Bash@3
-            inputs:
-              script: ls -lahR
-          - task: Bash@3
-            inputs:
-              script: ls -lahR ..
+          - pwsh: dir -Recurse
           - task: DotNetCoreCLI@2
             displayName: Run Benchmarks
             inputs:
               command: custom
               custom: benchmark
               arguments: Benchmarks.dll --filter "*" --runtimes net461 net472 netcoreapp3.0
-              workingDirectory: $(System.DefaultWorkingDirectory)\..\windows-build\test\Benchmarks\bin\Release\netcoreapp3.0
+              # workingDirectory: $(System.DefaultWorkingDirectory)\..\windows-build\test\Benchmarks\bin\Release\netcoreapp3.0
 
   - stage: Release
     displayName: 🚀

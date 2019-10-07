@@ -159,7 +159,9 @@ stages:
           - task: Bash@3
             inputs:
               script: ls -lahR
-              workingDirectory: $(System.DefaultWorkingDirectory)
+          - task: Bash@3
+            inputs:
+              script: ls -lahR ..
           - task: DotNetCoreCLI@2
             displayName: Run Benchmarks
             inputs:

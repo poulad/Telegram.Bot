@@ -101,19 +101,19 @@ stages:
               custom: help
           - download: current
             artifact: windows-build
-          - pwsh: dir -Recurse
+          - pwsh: echo ${PWD}
           - pwsh: dir -Recurse ..
           - task: DotNetCoreCLI@2
             displayName: "List Unit Tests"
             inputs:
               command: test
-              projects: ../windows-build/test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
+              projects: windows-build/test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               arguments: --configuration Release --no-build --list-tests
           - task: DotNetCoreCLI@2
             displayName: "Execute Unit Tests"
             inputs:
               command: test
-              projects: ../windows-build/test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
+              projects: windows-build/test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               publishTestResults: true
               arguments: --configuration Release --no-build --verbosity normal
 

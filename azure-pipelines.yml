@@ -90,6 +90,8 @@ stages:
           vmImage: $(VM_IMAGE)
         steps:
           - checkout: none
+          - download: current
+            artifact: windows-build
           - task: DotNetCoreInstaller@2
             displayName: "Install .NET Core 3.0"
             inputs:
@@ -99,23 +101,23 @@ stages:
             inputs:
               command: custom
               custom: help
-          - download: current
-            artifact: windows-build
-          - pwsh: echo ${PWD}
+          - pwsh: dir -Recurse $(Pipeline.Workspace)
           - pwsh: dir -Recurse ..
           - task: DotNetCoreCLI@2
             displayName: "List Unit Tests"
             inputs:
               command: test
-              projects: windows-build/test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
+              projects: test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               arguments: --configuration Release --no-build --list-tests
+              workingDirectory: $(Pipeline.Workspace)\windows-build
           - task: DotNetCoreCLI@2
             displayName: "Execute Unit Tests"
             inputs:
               command: test
-              projects: windows-build/test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
+              projects: test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               publishTestResults: true
               arguments: --configuration Release --no-build --verbosity normal
+              workingDirectory: $(Pipeline.Workspace)\windows-build
 
   - stage: Release
     displayName: 🚀

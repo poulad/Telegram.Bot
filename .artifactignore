@@ -1,0 +1,5 @@
+**/*
+!src/Telegram.Bot/bin/Release/
+
+!test/Telegram.Bot.Tests.Unit/
+!test/Telegram.Bot.Tests.Integ/

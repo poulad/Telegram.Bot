@@ -66,29 +66,11 @@ stages:
               projects: src/**/*.csproj
               arguments: --configuration Release --framework netstandard1.1
           - task: DotNetCoreCLI@2
-            displayName: "Build Project for .NET Standard 2.0"
-            inputs:
-              command: build
-              projects: src/**/*.csproj
-              arguments: --configuration Release --framework netstandard2.0
-          - task: DotNetCoreCLI@2
             displayName: "Build Test Projects"
             inputs:
               command: build
-              projects: test/Telegram.Bot.Tests.Unit/*.csproj
+              projects: test/**/*.csproj
               arguments: --configuration Release
-          - task: DotNetCoreCLI@2
-            displayName: "Build Benchmarks Project for .NET Core 2.1"
-            inputs:
-              command: build
-              projects: test/Benchmarks/*.csproj
-              arguments: --configuration Release --framework netcoreapp2.1
-          - task: DotNetCoreCLI@2
-            displayName: "Build Benchmarks Project for .NET Core 3.0"
-            inputs:
-              command: build
-              projects: test/Benchmarks/*.csproj
-              arguments: --configuration Release --framework netcoreapp3.0
 
   - stage: UnitTest
     displayName: 🧪

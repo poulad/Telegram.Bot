@@ -9,8 +9,8 @@ trigger:
       - "**/*.md"
       - .travis.yml
 
-variables:
-  system.debug: "true"
+# variables:
+#   system.debug: "true"
 
 stages:
   - stage: Build
@@ -111,19 +111,19 @@ stages:
           - pwsh: dir -Recurse $(Pipeline.Workspace)
           - pwsh: dotnet test --configuration Release --no-build --framework netcoreapp3.0 --list-tests test/Telegram.Bot.Tests.Unit/
             displayName: "List Unit Tests"
-            workingDirectory: $(Pipeline.Workspace)\windows-build
+            workingDirectory: $(Pipeline.Workspace)/windows-build
             failOnStderr: true
-          - pwsh: dotnet test --configuration Release --no-build --framework netcoreapp3.0 --logger trx --verbosity normal test/Telegram.Bot.Tests.Unit/
+          - task: DotNetCoreCLI@2
             displayName: "List Unit Tests"
-            workingDirectory: $(Pipeline.Workspace)\windows-build
+            inputs:
+              command: test
+              arguments: --configuration Release --no-build --framework netcoreapp3.0 --list-tests test/Telegram.Bot.Tests.Unit/
+              workingDirectory: $(Pipeline.Workspace)/windows-build
+
+          - pwsh: dotnet test --configuration Release --no-build --framework netcoreapp3.0 --logger trx --verbosity normal test/Telegram.Bot.Tests.Unit/
+            displayName: "Execute Unit Tests"
+            workingDirectory: $(Pipeline.Workspace)/windows-build
             failOnStderr: true
-          # - task: DotNetCoreCLI@2
-          #   displayName: "List Unit Tests"
-          #   inputs:
-          #     command: custom
-          #     custom: test
-          #     arguments: --configuration Release --no-build --framework netcoreapp3.0 --list-tests windows-build/test/Telegram.Bot.Tests.Unit/
-          #     workingDirectory: $(Pipeline.Workspace)
           # - task: DotNetCoreCLI@2
           #   displayName: "Execute Unit Tests"
           #   inputs:

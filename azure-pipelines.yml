@@ -90,6 +90,7 @@ stages:
           vmImage: $(VM_IMAGE)
         steps:
           - checkout: none
+          - download: current
           - task: DownloadPipelineArtifact@2
             inputs:
               # itemPattern: test/Telegram.Bot.Tests.Unit/**/* # ToDo grab only the unit tests directory
@@ -111,6 +112,7 @@ stages:
               command: test
               projects: test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               arguments: --configuration Release --no-build --framework netcoreapp3.0 --list-tests
+              workingDirectory: $(Pipeline.Workspace)\windows-build\
           - task: DotNetCoreCLI@2
             displayName: "Execute Unit Tests"
             inputs:
@@ -118,6 +120,7 @@ stages:
               projects: test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               publishTestResults: true
               arguments: --configuration Release --no-build --framework netcoreapp3.0 --verbosity normal
+              workingDirectory: $(Pipeline.Workspace)\windows-build\
 
   - stage: Release
     displayName: 🚀

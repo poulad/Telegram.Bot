@@ -83,3 +83,4 @@ stages:
           - bash: dotnet test --configuration Release --verbosity normal test/Telegram.Bot.Tests.Unit/
             displayName: "Build and Run Unit Tests (Bash)"
             failOnStderr: true
+            workingDirectory: $(Pipeline.Workspace)/windows-build

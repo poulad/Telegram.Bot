@@ -21,6 +21,9 @@ stages:
               configuration: Release
           - publish: .
             artifact: windows-build
+          - bash: dotnet test --configuration Release --no-build --verbosity normal test/Telegram.Bot.Tests.Unit/
+            displayName: "Run Unit Tests (Bash)"
+            failOnStderr: true
 
   - stage: UnitTest
     displayName: 🧪

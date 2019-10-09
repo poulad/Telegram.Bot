@@ -109,6 +109,10 @@ stages:
               command: custom
               custom: help
           - pwsh: dir -Recurse $(Pipeline.Workspace)
+          - pwsh: dotnet test --configuration Release --no-build --framework netcoreapp3.0 --list-tests windows-build/test/Telegram.Bot.Tests.Unit/
+            displayName: "List Unit Tests"
+            workingDirectory: $(Pipeline.Workspace)\windows-build
+            failOnStderr: true
           - task: DotNetCoreCLI@2
             displayName: "List Unit Tests"
             inputs:

@@ -1,6 +1,3 @@
-trigger:
-  batch: true
-
 variables:
   system.debug: "true"
 
@@ -13,8 +10,6 @@ stages:
         pool:
           vmImage: windows-2019
         steps:
-          - bash: echo "##vso[task.setvariable variable=VERSION_SUFFIX]${BUILD_BUILDID}.${BUILD_SOURCEVERSION}"
-            displayName: "Set Package VERSION_SUFFIX environment variable"
           - task: NuGetToolInstaller@1
           - task: NuGetCommand@2
             inputs:
@@ -54,14 +49,16 @@ stages:
             inputs:
               command: custom
               custom: help
+
           - pwsh: dir -Recurse $(Pipeline.Workspace)
-          - pwsh: dotnet test --configuration Release --no-build --framework netcoreapp3.0 --list-tests test/Telegram.Bot.Tests.Unit/
-            displayName: "List Unit Tests"
+
+          - pwsh: dotnet test --configuration Release --no-build --verbosity normal test/Telegram.Bot.Tests.Unit/
+            displayName: "Run Unit Tests (PowerShell)"
             workingDirectory: $(Pipeline.Workspace)/windows-build
-            failOnStderr: true
+
           - task: DotNetCoreCLI@2
-            displayName: "List Unit Tests"
+            displayName: "Run Unit Tests (.NET Core Task)"
             inputs:
               command: test
-              arguments: --configuration Release --no-build --framework netcoreapp3.0 --list-tests test/Telegram.Bot.Tests.Unit/
+              arguments: --configuration Release --no-build --verbosity normal test/Telegram.Bot.Tests.Unit/
               workingDirectory: $(Pipeline.Workspace)/windows-build

@@ -9,6 +9,9 @@ trigger:
       - "**/*.md"
       - .travis.yml
 
+variables:
+  system.debug: "true"
+
 stages:
   - stage: Build
     displayName: 🚧
@@ -118,7 +121,7 @@ stages:
               command: test
               projects: test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               publishTestResults: true
-              arguments: test/Telegram.Bot.Tests.Unit/ --configuration Release --no-build --framework netcoreapp3.0 --verbosity normal
+              arguments: --configuration Release --no-build --framework netcoreapp3.0 --verbosity normal test/Telegram.Bot.Tests.Unit/
               workingDirectory: $(Pipeline.Workspace)\windows-build\
 
   - stage: Release

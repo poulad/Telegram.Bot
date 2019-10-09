@@ -52,7 +52,7 @@ stages:
 
           - pwsh: dir -Recurse $(Pipeline.Workspace)
 
-          - pwsh: dotnet test --configuration Release --no-build --verbosity normal test/Telegram.Bot.Tests.Unit/
+          - pwsh: dotnet test --configuration Release --framework netcoreapp3.0 --no-build --verbosity normal test/Telegram.Bot.Tests.Unit/
             displayName: "Run Unit Tests (PowerShell)"
             workingDirectory: $(Pipeline.Workspace)/windows-build
 
@@ -60,5 +60,5 @@ stages:
             displayName: "Run Unit Tests (.NET Core Task)"
             inputs:
               command: test
-              arguments: --configuration Release --no-build --verbosity normal test/Telegram.Bot.Tests.Unit/
+              arguments: --configuration Release --framework netcoreapp3.0 --no-build --verbosity normal test/Telegram.Bot.Tests.Unit/
               workingDirectory: $(Pipeline.Workspace)/windows-build

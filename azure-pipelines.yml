@@ -62,3 +62,12 @@ stages:
               command: test
               arguments: --configuration Release --framework netcoreapp3.0 --no-build --verbosity normal test/Telegram.Bot.Tests.Unit/
               workingDirectory: $(Pipeline.Workspace)/windows-build
+
+          - bash: dotnet test --configuration Release --framework netcoreapp3.0 --no-build --verbosity normal test/Telegram.Bot.Tests.Unit/
+            displayName: "Run Unit Tests (Bash)"
+            failOnStderr: true
+            workingDirectory: $(Pipeline.Workspace)/windows-build
+
+          - bash: ls -lahR
+            failOnStderr: true
+            workingDirectory: $(Pipeline.Workspace)/windows-build

@@ -92,19 +92,8 @@ stages:
           - checkout: none
           - task: DownloadPipelineArtifact@2
             inputs:
-              #buildType: 'current' # Options: current, specific
-              #project: # Required when buildType == Specific
-              #definition: # Required when buildType == Specific
-              #specificBuildWithTriggering: false # Optional
-              #buildVersionToDownload: 'latest' # Required when buildType == Specific# Options: latest, latestFromBranch, specific
-              #branchName: 'refs/heads/master' # Required when buildType == Specific && RunVersion == LatestFromBranch
-              #pipelineId: # Required when buildType == Specific && RunVersion == Specific
-              #tags: # Optional
-              #artifactName: # Optional
               itemPattern: test/Telegram.Bot.Tests.Unit/**/*
               targetPath: $(Build.SourcesDirectory) 
-          - download: current
-            artifact: windows-build
           - task: DotNetCoreInstaller@2
             displayName: "Install .NET Core 3.0"
             inputs:
@@ -120,7 +109,7 @@ stages:
             displayName: "List Unit Tests"
             inputs:
               command: test
-              projects: $(Pipeline.Workspace)\windows-build\test\Telegram.Bot.Tests.Unit\Telegram.Bot.Tests.Unit.csproj
+              projects: test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               arguments: --configuration Release --no-build --framework netcoreapp3.0 --list-tests
           - task: DotNetCoreCLI@2
             displayName: "Execute Unit Tests"
@@ -129,7 +118,6 @@ stages:
               projects: test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               publishTestResults: true
               arguments: --configuration Release --no-build --framework netcoreapp3.0 --verbosity normal
-              workingDirectory: $(Pipeline.Workspace)\windows-build
 
   - stage: Release
     displayName: 🚀

@@ -92,7 +92,8 @@ stages:
           - checkout: none
           - task: DownloadPipelineArtifact@2
             inputs:
-              # itemPattern: test/Telegram.Bot.Tests.Unit/**/*
+              # itemPattern: test/Telegram.Bot.Tests.Unit/**/* # ToDo grab only the unit tests directory
+              itemPattern: test\Telegram.Bot.Tests.Unit\**\*
               targetPath: $(Build.SourcesDirectory)
           - task: DotNetCoreInstaller@2
             displayName: "Install .NET Core 3.0"

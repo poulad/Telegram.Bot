@@ -113,9 +113,9 @@ stages:
             displayName: "Execute Unit Tests"
             inputs:
               command: test
-              projects: $(Pipeline.Workspace)\windows-build\test\Telegram.Bot.Tests.Unit\Telegram.Bot.Tests.Unit.csproj
+              projects: test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
               publishTestResults: true
-              arguments: --configuration Release --no-build --verbosity normal
+              arguments: --configuration Release --no-build --framework netcoreapp3.0 --verbosity normal
               workingDirectory: $(Pipeline.Workspace)\windows-build
 
   - stage: Release

@@ -92,7 +92,7 @@ stages:
           - checkout: none
           - task: DownloadPipelineArtifact@2
             inputs:
-              itemPattern: test/Telegram.Bot.Tests.Unit/**/*
+              # itemPattern: test/Telegram.Bot.Tests.Unit/**/*
               targetPath: $(Build.SourcesDirectory)
           - task: DotNetCoreInstaller@2
             displayName: "Install .NET Core 3.0"
@@ -104,7 +104,6 @@ stages:
               command: custom
               custom: help
           - pwsh: dir -Recurse $(Pipeline.Workspace)
-          - pwsh: dir -Recurse ..
           - task: DotNetCoreCLI@2
             displayName: "List Unit Tests"
             inputs:

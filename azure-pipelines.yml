@@ -112,7 +112,8 @@ stages:
           - task: DotNetCoreCLI@2
             displayName: "List Unit Tests"
             inputs:
-              command: test
+              command: custom
+              custom: test
               arguments: --configuration Release --no-build --framework netcoreapp3.0 --list-tests windows-build/test/Telegram.Bot.Tests.Unit/
               workingDirectory: $(Pipeline.Workspace)
           - task: DotNetCoreCLI@2

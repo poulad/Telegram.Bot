@@ -93,7 +93,7 @@ stages:
           - task: DownloadPipelineArtifact@2
             inputs:
               itemPattern: test/Telegram.Bot.Tests.Unit/**/*
-              targetPath: $(Build.SourcesDirectory) 
+              targetPath: $(Build.SourcesDirectory)
           - task: DotNetCoreInstaller@2
             displayName: "Install .NET Core 3.0"
             inputs:

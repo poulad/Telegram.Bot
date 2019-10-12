@@ -29,19 +29,19 @@ stages:
               prefix="${BASH_REMATCH[1]}"
               echo "##vso[task.setvariable variable=VERSION_PREFIX]$prefix"
             displayName: "Extracting version prefix into VERSION_PREFIX environment variable"
-          - task: DotNetCoreInstaller@2
-            displayName: "Install .NET Core 3.0"
-            inputs:
-              version: 3.0.100
-          - bash: dotnet help
-            displayName: "Initialize .NET Core Environment"
+          # - task: DotNetCoreInstaller@2
+          #   displayName: "Install .NET Core 3.0"
+          #   inputs:
+          #     version: 3.0.100
+          # - bash: dotnet help
+          #   displayName: "Initialize .NET Core Environment"
           - bash: dotnet build --configuration Release
             displayName: "Build Project"
           - publish: .
             artifact: windows-build
           - bash: |
               set -xe
-              suffix="${BUILD_BUILDID}+${BUILD_SOURCEVERSION:0:7}"
+              suffix="ci-${BUILD_BUILDID}+${BUILD_SOURCEVERSION:0:7}"
               echo "##vso[task.setvariable variable=VERSION_SUFFIX]$suffix"
             displayName: "Set Package VERSION_SUFFIX environment variable"
           - bash: dotnet build --configuration Release src/Telegram.Bot/

@@ -29,33 +29,23 @@ stages:
               prefix="${BASH_REMATCH[1]}"
               echo "##vso[task.setvariable variable=VERSION_PREFIX]$prefix"
             displayName: "Extracting version prefix into VERSION_PREFIX environment variable"
-          - task: NuGetToolInstaller@1
-          - task: NuGetCommand@2
-            inputs:
-              restoreSolution: Telegram.Bot.sln
-          - task: VSBuild@1
-            inputs:
-              solution: Telegram.Bot.sln
-              platform: Any CPU
-              configuration: Release
           - bash: |
               set -xe
               suffix="ci-${BUILD_BUILDID}.${BUILD_SOURCEVERSION:0:7}"
               echo "##vso[task.setvariable variable=VERSION_SUFFIX]$suffix"
             displayName: "Set Package VERSION_SUFFIX environment variable"
-          - task: VSBuild@1
-            inputs:
-              solution: Telegram.Bot.sln
-              platform: Any CPU
-              configuration: Release
+          - pwsh: dotnet build --configuration Release
+            displayName: "Build Project"
           - publish: .
             artifact: windows-build
+          - bash: dotnet build --configuration Release --version-suffix "$VERSION_SUFFIX" src/Telegram.Bot/
+            displayName: "Build Project"
           - task: NuGetCommand@2
             displayName: "Publish Package to Azure Artifacts"
             inputs:
               command: push
               publishVstsFeed: Telegram.Bot
-              packagesToPush: src/**/*$(VERSION_SUFFIX)*.nupkg
+              packagesToPush: src/**/*$(VERSION_SUFFIX).nupkg
 
       - job: BuildOnUnix
         displayName: "Build with .NET Core 3.0 on "

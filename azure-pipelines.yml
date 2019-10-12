@@ -31,7 +31,7 @@ stages:
             displayName: "Extracting version prefix into VERSION_PREFIX environment variable"
           - bash: |
               set -xe
-              suffix="ci-${BUILD_BUILDID}-${BUILD_SOURCEVERSION:0:7}"
+              suffix="${BUILD_BUILDID}.${BUILD_SOURCEVERSION:0:7}"
               echo "##vso[task.setvariable variable=VERSION_SUFFIX]$suffix"
             displayName: "Set Package VERSION_SUFFIX environment variable"
           - task: DotNetCoreInstaller@2

@@ -9,6 +9,10 @@ trigger:
       - "**/*.md"
       - .travis.yml
 
+variables:
+  VERSION_PREFIX: ""
+  VERSION_SUFFIX: ""
+
 stages:
   - stage: Build
     displayName: 🚧
@@ -18,11 +22,13 @@ stages:
         displayName: "Build with VS 2019 on Windows"
         pool:
           vmImage: windows-2019
-        variables:
-          VERSION: "1.2.3"
         steps:
-          - bash: echo "##vso[task.setvariable variable=VERSION]15.7.5-${BUILD_BUILDID}.${BUILD_SOURCEVERSION}"
-            displayName: "Set Package VERSION environment variable"
+          - bash: |
+              set -xe
+              [[ $(cat src/Telegram.Bot/Telegram.Bot.csproj) =~ \<VersionPrefix\>(.*)\</VersionPrefix\> ]]
+              prefix="${BASH_REMATCH[1]}"
+              echo "##vso[task.setvariable variable=VERSION_PREFIX]$prefix"
+            displayName: "Extracting version prefix into VERSION_PREFIX environment variable"
           - task: NuGetToolInstaller@1
           - task: NuGetCommand@2
             inputs:
@@ -32,6 +38,11 @@ stages:
               solution: Telegram.Bot.sln
               platform: Any CPU
               configuration: Release
+          - bash: |
+              set -xe
+              suffix="${BUILD_BUILDID}.${BUILD_SOURCEVERSION}"
+              echo "##vso[task.setvariable variable=VERSION_SUFFIX]$suffix"
+            displayName: "Set Package VERSION_SUFFIX environment variable"
           - publish: .
             artifact: windows-build
           - task: NuGetCommand@2
@@ -39,9 +50,7 @@ stages:
             inputs:
               command: push
               publishVstsFeed: Telegram.Bot
-              versioningScheme: byEnvVar
-              versionEnvVar: VERSION
-              packagesToPush: src/**/*.nupkg
+              packagesToPush: src/**/*$(VERSION_SUFFIX).nupkg
 
       - job: BuildOnUnix
         displayName: "Build with .NET Core 3.0 on "

@@ -41,7 +41,7 @@ stages:
             artifact: windows-build
           - bash: |
               set -xe
-              suffix="ci.${BUILD_BUILDID}+${BUILD_SOURCEVERSION:0:7}"
+              suffix="ci-${BUILD_BUILDID}+${BUILD_SOURCEVERSION:0:7}"
               echo "##vso[task.setvariable variable=VERSION_SUFFIX]$suffix"
             displayName: "Set Package VERSION_SUFFIX environment variable"
           - bash: dotnet build --configuration Release --version-suffix "$VERSION_SUFFIX" src/Telegram.Bot/

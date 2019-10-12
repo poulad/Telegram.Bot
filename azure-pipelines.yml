@@ -106,46 +106,16 @@ stages:
         pool:
           vmImage: $(VM_IMAGE)
         steps:
-          - checkout: none
-          - download: current
-          # - task: DownloadPipelineArtifact@2
-          #   inputs:
-          #     # itemPattern: test/Telegram.Bot.Tests.Unit/**/* # ToDo grab only the unit tests directory
-          #     itemPattern: test\Telegram.Bot.Tests.Unit\**\*
-          #     targetPath: $(Build.SourcesDirectory)
           - task: DotNetCoreInstaller@2
             displayName: "Install .NET Core 3.0"
             inputs:
               version: 3.0.100
-          - task: DotNetCoreCLI@2
+          - bash: dotnet help
             displayName: "Initialize .NET Core Environment"
-            inputs:
-              command: custom
-              custom: help
-          - pwsh: dir -Recurse $(Pipeline.Workspace)
-          - pwsh: dotnet test --configuration Release --no-build --framework netcoreapp3.0 --list-tests test/Telegram.Bot.Tests.Unit/
+          - bash: dotnet test --configuration Release --list-tests test/Telegram.Bot.Tests.Unit/
             displayName: "List Unit Tests"
-            workingDirectory: $(Pipeline.Workspace)/windows-build
-            failOnStderr: true
-          - task: DotNetCoreCLI@2
-            displayName: "List Unit Tests"
-            inputs:
-              command: test
-              arguments: --configuration Release --no-build --framework netcoreapp3.0 --list-tests test/Telegram.Bot.Tests.Unit/
-              workingDirectory: $(Pipeline.Workspace)/windows-build
-
-          - pwsh: dotnet test --configuration Release --no-build --framework netcoreapp3.0 --logger trx --verbosity normal test/Telegram.Bot.Tests.Unit/
+          - bash: dotnet test --configuration Release --no-build --logger trx --verbosity normal test/Telegram.Bot.Tests.Unit/
             displayName: "Execute Unit Tests"
-            workingDirectory: $(Pipeline.Workspace)/windows-build
-            failOnStderr: true
-          # - task: DotNetCoreCLI@2
-          #   displayName: "Execute Unit Tests"
-          #   inputs:
-          #     command: test
-          #     projects: test/Telegram.Bot.Tests.Unit/Telegram.Bot.Tests.Unit.csproj
-          #     publishTestResults: true
-          #     arguments: --configuration Release --no-build --framework netcoreapp3.0 --logger trx --verbosity normal test/Telegram.Bot.Tests.Unit/
-          #     workingDirectory: $(Pipeline.Workspace)\windows-build\
 
   - stage: Release
     displayName: 🚀

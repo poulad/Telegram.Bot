@@ -9,9 +9,6 @@ trigger:
       - "**/*.md"
       - .travis.yml
 
-# variables:
-#   system.debug: "true"
-
 stages:
   - stage: Build
     displayName: 🚧
@@ -22,8 +19,8 @@ stages:
         pool:
           vmImage: windows-2019
         steps:
-          - bash: echo "##vso[task.setvariable variable=VERSION_SUFFIX]${BUILD_BUILDID}.${BUILD_SOURCEVERSION}"
-            displayName: "Set Package VERSION_SUFFIX environment variable"
+          # - bash: echo "##vso[task.setvariable variable=VERSION_SUFFIX]${BUILD_BUILDID}.${BUILD_SOURCEVERSION}"
+          #   displayName: "Set Package VERSION_SUFFIX environment variable"
           - task: NuGetToolInstaller@1
           - task: NuGetCommand@2
             inputs:
@@ -40,6 +37,7 @@ stages:
             inputs:
               command: push
               publishVstsFeed: Telegram.Bot
+              versioningScheme: byPrereleaseNumber
               packagesToPush: src/**/*.nupkg
 
       - job: BuildOnUnix
@@ -142,15 +140,9 @@ stages:
         pool:
           vmImage: windows-2019
         steps:
+          - checkout: none
+          - download: current
           - task: NuGetToolInstaller@1
-          - task: NuGetCommand@2
-            inputs:
-              restoreSolution: Telegram.Bot.sln
-          - task: VSBuild@1
-            inputs:
-              solution: Telegram.Bot.sln
-              platform: Any CPU
-              configuration: Release
           - task: NuGetCommand@2
             displayName: "Publish Package to NuGet"
             inputs:

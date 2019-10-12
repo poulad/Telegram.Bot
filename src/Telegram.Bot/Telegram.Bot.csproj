@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <VersionPrefix>15.1.0</VersionPrefix>
-    <VersionSuffix>$(VERSION_SUFFIX)</VersionSuffix>
+    <VersionSuffix></VersionSuffix>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>

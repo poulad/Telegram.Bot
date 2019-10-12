@@ -43,6 +43,11 @@ stages:
               suffix="${BUILD_BUILDID}.${BUILD_SOURCEVERSION}"
               echo "##vso[task.setvariable variable=VERSION_SUFFIX]$suffix"
             displayName: "Set Package VERSION_SUFFIX environment variable"
+          - task: VSBuild@1
+            inputs:
+              solution: Telegram.Bot.sln
+              platform: Any CPU
+              configuration: Release
           - publish: .
             artifact: windows-build
           - task: NuGetCommand@2
@@ -50,7 +55,7 @@ stages:
             inputs:
               command: push
               publishVstsFeed: Telegram.Bot
-              packagesToPush: src/**/*$(VERSION_SUFFIX).nupkg
+              packagesToPush: src/**/*$(VERSION_SUFFIX)*.nupkg
 
       - job: BuildOnUnix
         displayName: "Build with .NET Core 3.0 on "

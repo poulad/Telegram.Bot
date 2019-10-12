@@ -34,6 +34,15 @@ stages:
               suffix="ci-${BUILD_BUILDID}.${BUILD_SOURCEVERSION:0:7}"
               echo "##vso[task.setvariable variable=VERSION_SUFFIX]$suffix"
             displayName: "Set Package VERSION_SUFFIX environment variable"
+          - task: DotNetCoreInstaller@2
+            displayName: "Install .NET Core 3.0"
+            inputs:
+              version: 3.0.100
+          - task: DotNetCoreCLI@2
+            displayName: "Initialize .NET Core Environment"
+            inputs:
+              command: custom
+              custom: help
           - pwsh: dotnet build --configuration Release
             displayName: "Build Project"
           - publish: .

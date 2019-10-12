@@ -56,39 +56,6 @@ stages:
               publishVstsFeed: Telegram.Bot
               packagesToPush: src/**/*$(VERSION_SUFFIX).nupkg
 
-      - job: BuildOnUnix
-        displayName: "Build with .NET Core 3.0 on "
-        strategy:
-          matrix:
-            Ubuntu:
-              VM_IMAGE: ubuntu-16.04
-            macOS:
-              VM_IMAGE: macOS-10.13
-        pool:
-          vmImage: $(VM_IMAGE)
-        steps:
-          - task: DotNetCoreInstaller@2
-            displayName: "Install .NET Core 3.0"
-            inputs:
-              version: 3.0.100
-          - task: DotNetCoreCLI@2
-            displayName: "Initialize .NET Core Environment"
-            inputs:
-              command: custom
-              custom: help
-          - task: DotNetCoreCLI@2
-            displayName: "Build Project for .NET Standard 1.1"
-            inputs:
-              command: build
-              projects: src/**/*.csproj
-              arguments: --configuration Release --framework netstandard1.1
-          - task: DotNetCoreCLI@2
-            displayName: "Build Test Projects"
-            inputs:
-              command: build
-              projects: test/**/*.csproj
-              arguments: --configuration Release
-
   - stage: UnitTest
     displayName: 🧪
     condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')

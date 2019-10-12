@@ -38,12 +38,9 @@ stages:
             displayName: "Install .NET Core 3.0"
             inputs:
               version: 3.0.100
-          - task: DotNetCoreCLI@2
+          - bash: dotnet help
             displayName: "Initialize .NET Core Environment"
-            inputs:
-              command: custom
-              custom: help
-          - pwsh: dotnet build --configuration Release
+          - bash: dotnet build --configuration Release
             displayName: "Build Project"
           - publish: .
             artifact: windows-build

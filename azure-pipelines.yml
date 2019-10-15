@@ -35,7 +35,7 @@ stages:
             displayName: "Build Solution"
           - publish: .
             artifact: windows-build
-          - bash: dotnet build --configuration Release --version-suffix "ci-${BUILD_BUILDID}+${BUILD_SOURCEVERSION:0:7}" src/Telegram.Bot/
+          - bash: dotnet build --configuration Release --version-suffix "ci-${BUILD_BUILDID}+${BUILD_SOURCEVERSION}" src/Telegram.Bot/
             displayName: "Build Package with CI version"
           - task: NuGetCommand@2
             displayName: "Publish CI Package to Azure Artifacts"

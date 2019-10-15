@@ -16,7 +16,6 @@ variables:
 stages:
   - stage: Build
     displayName: 🚧
-    condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
     jobs:
       - job: BuildOnWindows
         displayName: "Build with VS 2019 on Windows"

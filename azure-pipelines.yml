@@ -9,10 +9,6 @@ trigger:
       - "**/*.md"
       - .travis.yml
 
-variables:
-  VERSION_PREFIX: ""
-  VERSION_SUFFIX: ""
-
 stages:
   - stage: Build
     displayName: 🚧
@@ -22,12 +18,6 @@ stages:
         pool:
           vmImage: windows-2019
         steps:
-          - bash: |
-              set -xe
-              [[ $(cat src/Telegram.Bot/Telegram.Bot.csproj) =~ \<VersionPrefix\>(.*)\</VersionPrefix\> ]]
-              prefix="${BASH_REMATCH[1]}"
-              echo "##vso[task.setvariable variable=VERSION_PREFIX]$prefix"
-            displayName: "Extracting version prefix into VERSION_PREFIX environment variable"
           - bash: dotnet help
             displayName: "Initialize .NET Core Environment"
           - bash: dotnet build --configuration Release
@@ -90,4 +80,4 @@ stages:
               includeNugetOrg: true
               nuGetFeedType: external
               publishFeedCredentials: NuGet
-              packagesToPush: src/**/*.nupkg
+              packagesToPush: $(Agent.BuildDirectory)/**/src/**/Release/*.nupkg

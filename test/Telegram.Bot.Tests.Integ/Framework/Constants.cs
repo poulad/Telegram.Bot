@@ -26,6 +26,8 @@ namespace Telegram.Bot.Tests.Integ.Framework
 
             public const string SendTextMessage = "Sending Text Messages";
 
+            public const string SendTextMessage2 = "Sending Text Messages2";
+
             public const string SendPhotoMessage = "Sending Photo Messages";
 
             public const string SendVideoMessage = "Sending Video Messages";
